@@ -19,5 +19,11 @@ pipeline {
                 sh 'mvn clean test'
             }
         }
+
+          stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
     }
 }

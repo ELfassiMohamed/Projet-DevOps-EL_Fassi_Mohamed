@@ -33,7 +33,7 @@ pipeline {
     post {
         success {
             slackSend(
-                channel: '#jenkins-ci',
+                channel: '#devops-gr4',
                 message: "SUCCESS: Job ${env.JOB_NAME} #${env.BUILD_NUMBER} passed and deployed.",
                 botUser: true
             )
@@ -41,7 +41,7 @@ pipeline {
 
         failure {
             slackSend(
-                channel: '#jenkins-ci',
+                channel: '#devops-gr4',
                 message: "FAILURE: Job ${env.JOB_NAME} #${env.BUILD_NUMBER} failed. Deployment skipped.",
                 botUser: true
             )

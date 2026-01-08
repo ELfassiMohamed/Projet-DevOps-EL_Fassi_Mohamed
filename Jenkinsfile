@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JDK17'
-        maven 'Maven'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -20,10 +15,34 @@ pipeline {
             }
         }
 
-          stage('Archive') {
+        stage('Archive') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying application...'
+                // Example (optional):
+                // sh 'java -jar target/Projet-DevOps-0.0.1-SNAPSHOT.jar'
+            }
+        }
+    }
+
+    post {
+        success {
+            slackSend(
+                channel: '#jenkins-ci',
+                message: "SUCCESS: Job ${env.JOB_NAME} #${env.BUILD_NUMBER} passed and deployed."
+            )
+        }
+
+        failure {
+            slackSend(
+                channel: '#jenkins-ci',
+                message: "FAILURE: Job ${env.JOB_NAME} #${env.BUILD_NUMBER} failed. Deployment skipped."
+            )
         }
     }
 }
